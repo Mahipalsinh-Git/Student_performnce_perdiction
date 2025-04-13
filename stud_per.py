@@ -6,21 +6,6 @@ from sklearn.preprocessing import StandardScaler,LabelEncoder
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 
-"""
-mongoDB 
-    username - mahipalsinhthakor, 
-    password - k98sXehgLcxFVg4l
-
-    mongodb+srv://atlas-sample-dataset-load-67fbb5c9a939f22be8f33a91:<db_password>@datascienceeuron.fcffh8n.mongodb.net/?retryWrites=true&w=majority&appName=dataScienceEuron
-
-    uri = "mongodb+srv://<db_username>:<db_password>@datascienceeuron.fcffh8n.mongodb.net/?appName=dataScienceEuron"
-
-"""
-
-# uri = "mongodb+srv://sudhanshu:sudh1234@cluster0.pnq4z.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-# client = MongoClient(uri, server_api=ServerApi('1'))
-# db = client['student']
-# collection = db["student_pred"]
 
 uri = "mongodb+srv://mahipal:mahipal@datascienceeuron.fcffh8n.mongodb.net/?retryWrites=true&w=majority&appName=dataScienceEuron"
 
@@ -68,11 +53,12 @@ def main():
             "Sample Question Papers Practiced":number_of_peper_solved
         }
         prediction = predict_data(user_data)
+        st.success(f"your prediciotn result is {prediction}")
 
-        user_data['prediction'] = prediction
+        user_data['prediction'] = round(float(prediction[0]),2)
+        user_data = {key: int(value) if isinstance(value, np.integer) else float(value) if isinstance(value, np.floating) else value for key, value in user_data.items()}
         collection.insert_one(user_data)
 
-        st.success(f"your prediciotn result is {prediction}")
     
 if __name__ == "__main__":
     main()
